@@ -12,16 +12,14 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <main>
+    <main className="container">
       <NavBar handleLogout={() => setIsLoggedIn(false)} />
       <Routes>
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         {isLoggedIn ? (
           <>
-            <Route path=":userId/posts" element={<Dashboard />} />
-            <Route path=":userId/posts/:postId" element={<Post />} />
-            <Route path=":userId" element={<Navigate to=":userId/posts" />} />
-            <Route path="" element={<Navigate to="login" />} />
+            <Route path="/:userId/posts" element={<Dashboard />} />
+            <Route path="/:userId/posts/:postId" element={<Post />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="login" />} />

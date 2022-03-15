@@ -12,9 +12,9 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <section>
+    <section className="container-fluid">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h3>Login</h3>
         <input type="text" placeholder="Email or Username" />
         <input type="password" placeholder="Password" />
         <button type="submit">Login</button>

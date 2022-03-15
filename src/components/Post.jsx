@@ -26,17 +26,18 @@ const Post = () => {
   }, [userId, postId]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <progress indeterminate />;
   }
 
   return (
-    <section>
+    <section aria-busy={isLoading}>
+      <h1>Comments</h1>
       {comments.map(({ id, name, email, body }) => (
-        <div key={id}>
-          <h2>{name}</h2>
-          <p>{email}</p>
+        <article key={id}>
+          <h6>{name}</h6>
           <p>{body}</p>
-        </div>
+          <a href={`mailto:${email}`}>{email}</a>
+        </article>
       ))}
     </section>
   );

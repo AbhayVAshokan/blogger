@@ -1,14 +1,24 @@
 import React from "react";
 
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NavBar = ({ handleLogout }) => {
-  const { userId, postId } = useParams();
-
   return (
     <nav>
-      {<button>← Back</button>}
-      {<button onClick={handleLogout}>Logout</button>}
+      <ul>
+        <li>
+          <a href="/" className="contrast">
+            <strong>Blogger</strong>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <Link to="login" onClick={handleLogout}>
+            Logout
+          </Link>
+        </li>
+      </ul>
     </nav>
   );
 };
