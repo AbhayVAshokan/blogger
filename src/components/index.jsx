@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -32,11 +33,17 @@ const Dashboard = () => {
   return (
     <section>
       <h1>Posts</h1>
+      <button onClick={() => navigate(`/${userId}/posts/new`)}>
+        + Add New Post
+      </button>
       {posts.map(({ id, title, body }) => (
         <Link to={`/${userId}/posts/${id}`}>
           <article key={id}>
             <h6>{title}</h6>
             <p>{body}</p>
+            <Link to={`/${userId}/posts/${id}/edit`} className="contrast">
+              Edit ✍
+            </Link>
           </article>
         </Link>
       ))}

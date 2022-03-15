@@ -15,8 +15,8 @@ const Login = ({ setIsLoggedIn }) => {
     <section className="container-fluid">
       <form onSubmit={handleSubmit}>
         <h3>Login</h3>
-        <input type="text" placeholder="Email or Username" />
-        <input type="password" placeholder="Password" />
+        <input type="text" placeholder="Email or Username" required />
+        <input type="password" placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
     </section>
