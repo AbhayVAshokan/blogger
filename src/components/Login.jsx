@@ -1,24 +1,25 @@
 import React from "react";
+
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ handleSubmit }) => {
+const Login = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
+  const handleSubmit = (event) => {
+    const userId = Math.floor(Math.random() * 10 + 1);
+    setIsLoggedIn(true);
+    navigate(`/${userId}/posts`);
+  };
+
   return (
-    <main>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit();
-          navigate("/");
-        }}
-      >
+    <section>
+      <form onSubmit={handleSubmit}>
         <h2>Login</h2>
         <input type="text" placeholder="Email or Username" />
         <input type="password" placeholder="Password" />
         <button type="submit">Login</button>
       </form>
-    </main>
+    </section>
   );
 };
 

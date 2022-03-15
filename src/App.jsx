@@ -1,50 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import axios from "axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Dashboard from "./components";
 import Login from "./components/Login";
+import NavBar from "./components/NavBar";
+import Post from "./components/Post";
 
 const App = () => {
+  // Dummy state to simulate authentication.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({});
-
-  const loadUser = async () => {
-    setIsLoading(true);
-    try {
-      const userId = Math.floor(Math.random() * 10 + 1);
-      const user = await axios.get(
-        `https://jsonplaceholder.typicode.com/users/${userId}`
-      );
-      setUser(user);
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    loadUser();
-    return () => setIsLoggedIn(false);
-  }, [isLoggedIn]);
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
-    <Routes>
-      <Route
-        path="login"
-        element={<Login handleSubmit={() => setIsLoggedIn(true)} />}
-      />
-      {isLoggedIn ? (
-        <Route path="" element={<Dashboard user={user} />} />
-      ) : (
-        <Route path="*" element={<Navigate to="login" />} />
-      )}
-    </Routes>
+    <main>
+      <NavBar handleLogout={() => setIsLoggedIn(false)} />
+      <Routes>
+        <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        {isLoggedIn ? (
+          <>
+            <Route path=":userId/posts" element={<Dashboard />} />
+            <Route path=":userId/posts/:postId" element={<Post />} />
+            <Route path=":userId" element={<Navigate to=":userId/posts" />} />
+            <Route path="" element={<Navigate to="login" />} />
+          </>
+        ) : (
+          <Route path="*" element={<Navigate to="login" />} />
+        )}
+      </Routes>
+    </main>
   );
 };
 
