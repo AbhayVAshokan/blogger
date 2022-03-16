@@ -14,7 +14,10 @@ const usePostsQuery = () => {
           );
           return data;
         },
-        options
+        {
+          staleTime: 500000,
+          ...options,
+        }
       ),
     Show: (postId, options) =>
       useQuery(
@@ -25,7 +28,9 @@ const usePostsQuery = () => {
           );
           return data;
         },
-        options
+        {
+          ...options,
+        }
       ),
     Create: (payload, options) =>
       useMutation(
