@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import usePostsQuery from "../queries/post";
 
 const New = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const { userId } = useParams();
   const [post, setPost] = useState({
+    userId,
     title: "",
     body: "",
   });
-  const navigate = useNavigate();
+  const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Create(post);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    try {
-      await axios.post("https://jsonplaceholder.typicode.com/posts", post);
-      navigate(-1);
-    } catch (error) {
-    } finally {
-      setIsSubmitting(false);
-    }
+    await mutateAsync(post);
+    // why does it call fetch-lists api again?
+    navigate(-1);
   };
 
   const handleChange = (event) => {
