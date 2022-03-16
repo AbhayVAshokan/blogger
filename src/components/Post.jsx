@@ -24,7 +24,6 @@ const Post = () => {
 
   return (
     <section aria-busy={isLoading}>
-      <h1>Comments</h1>
       {comments.map(({ id, name, email, body }) => (
         <article key={id}>
           <h6>{name}</h6>

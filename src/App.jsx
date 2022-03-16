@@ -20,22 +20,27 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <main className="container">
-        <NavBar handleLogout={() => setIsLoggedIn(false)} />
+        {/* <NavBar handleLogout={() => setIsLoggedIn(false)} /> */}
         <Routes>
           <Route
-            path="login"
-            element={<Login setIsLoggedIn={setIsLoggedIn} />}
-          />
-          {isLoggedIn ? (
-            <>
-              <Route path=":userId/posts" element={<Dashboard />} />
-              <Route path=":userId/posts/new" element={<New />} />
-              <Route path=":userId/posts/:postId/edit" element={<Edit />} />
-              <Route path=":userId/posts/:postId" element={<Post />} />
-            </>
-          ) : (
-            <Route path="*" element={<Navigate to="login" />} />
-          )}
+            path="/"
+            element={<NavBar handleLogout={() => setIsLoggedIn(false)} />}
+          >
+            <Route
+              path="login"
+              element={<Login setIsLoggedIn={setIsLoggedIn} />}
+            />
+            {isLoggedIn ? (
+              <>
+                <Route path=":userId/posts" element={<Dashboard />} />
+                <Route path=":userId/posts/new" element={<New />} />
+                <Route path=":userId/posts/:postId/edit" element={<Edit />} />
+                <Route path=":userId/posts/:postId" element={<Post />} />
+              </>
+            ) : (
+              <Route path="*" element={<Navigate to="login" />} />
+            )}
+          </Route>
         </Routes>
       </main>
       <ReactQueryDevtools />

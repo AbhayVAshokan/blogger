@@ -10,7 +10,11 @@ const useCommentsQuery = () => ({
         const { data } = await commentsApi.fetch(postId);
         return data;
       },
-      options
+      {
+        staleTime: 500000,
+        refetchOnWindowFocus: false,
+        ...options,
+      }
     ),
 });
 
