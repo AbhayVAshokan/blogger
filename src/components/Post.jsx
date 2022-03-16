@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import useCommentsQuery from "../queries/comment";
 
 const Post = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [comments, setComments] = useState([]);
-  const { userId, postId } = useParams();
-
-  useEffect(() => {
-    const loadComments = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://jsonplaceholder.typicode.com/comments?postId=${postId}&userId=${userId}`
-        );
-        setComments(data);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadComments();
-  }, [userId, postId]);
+  const { postId } = useParams();
+  const {
+    data: comments,
+    isLoading,
+    isError,
+  } = useCommentsQuery().Fetch(postId);
 
   if (isLoading) {
     return <progress indeterminate />;
+  }
+  if (isError) {
+    return (
+      <h3 className="secondary">
+        Something went wrong! Please try again later.
+      </h3>
+    );
   }
 
   return (

@@ -8,7 +8,7 @@ const Dashboard = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  const { data: posts, isLoading, isError } = usePostsQuery.fetch(userId);
+  const { data: posts, isLoading, isError } = usePostsQuery().Fetch(userId);
 
   if (isLoading) {
     return <progress indeterminate />;

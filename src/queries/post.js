@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 const usePostsQuery = () => ({
-  fetch: (userId, options) =>
+  Fetch: (userId, options) =>
     useQuery(
       ["list-posts", userId],
       async () => {
@@ -13,7 +13,7 @@ const usePostsQuery = () => ({
       },
       options
     ),
-  show: (postId, options) =>
+  Show: (postId, options) =>
     useQuery(
       ["show-post", postId],
       async () => {
