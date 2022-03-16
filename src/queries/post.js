@@ -24,7 +24,6 @@ const usePostsQuery = () => {
       useQuery(
         ["show-post", postId],
         async () => {
-          if (postId === undefined) return {};
           const { data } = await postsApi.show(postId);
           return data;
         },

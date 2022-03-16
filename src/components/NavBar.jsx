@@ -6,8 +6,8 @@ import useUsersQuery from "../queries/user";
 
 const NavBar = ({ handleLogout }) => {
   const { userId, postId } = useParams();
-  const post = usePostsQuery().Show(postId);
-  const user = useUsersQuery().Show(userId);
+  const post = usePostsQuery().Show(postId, { enabled: !!postId });
+  const user = useUsersQuery().Show(userId, { enabled: !!userId });
 
   return (
     <>

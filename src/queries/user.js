@@ -8,13 +8,13 @@ const useUsersQuery = () => {
       useQuery(
         ["show-user", userId],
         async () => {
-          if (userId === undefined) return {};
           const { data } = await usersApi.show(userId);
           return data;
         },
         {
           staleTime: 500000,
           refetchOnWindowFocus: false,
+          ...options,
         }
       ),
   };
