@@ -4,17 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import usePostsQuery from "../queries/post";
 
 const Edit = () => {
-  const { userId } = useParams();
-  const [post, setPost] = useState({
-    userId,
-    title: "",
-    body: "",
-  });
   const navigate = useNavigate();
   const { postId } = useParams();
-  const { isLoading, isError } = usePostsQuery().Show(postId, {
+  const { data, isLoading, isError } = usePostsQuery().Show(postId, {
     onSuccess: (data) => setPost(data),
   });
+  const [post, setPost] = useState(data);
   const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Update({
     postId,
     payload: post,

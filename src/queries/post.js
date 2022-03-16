@@ -29,6 +29,7 @@ const usePostsQuery = () => {
           return data;
         },
         {
+          staleTime: 500000,
           refetchOnWindowFocus: false,
           ...options,
         }
