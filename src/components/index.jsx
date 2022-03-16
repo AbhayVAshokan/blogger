@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
+
+import Delete from "./Delete";
 
 import usePostsQuery from "../queries/post";
 
 const Dashboard = () => {
+  const [deletionId, setDeletionId] = useState();
   const { userId } = useParams();
   const navigate = useNavigate();
-
   const { data: posts, isLoading, isError } = usePostsQuery().Fetch(userId);
 
   if (isLoading) {
@@ -29,16 +31,28 @@ const Dashboard = () => {
         + Add New Post
       </button>
       {posts.map(({ id, title, body }) => (
-        <Link to={`/${userId}/posts/${id}`}>
-          <article key={id}>
+        <article key={id}>
+          <Link to={`/${userId}/posts/${id}`}>
             <h6>{title}</h6>
-            <p>{body}</p>
-            <Link to={`/${userId}/posts/${id}/edit`} className="contrast">
-              Edit ✍
-            </Link>
-          </article>
-        </Link>
+          </Link>
+          <p>{body}</p>
+          <Link to={`/${userId}/posts/${id}/edit`} className="contrast">
+            Edit ✍
+          </Link>{" "}
+          <Link
+            to="#delete"
+            className="contrast"
+            onClick={() => setDeletionId(id)}
+          >
+            Delete 🗑️
+          </Link>
+        </article>
       ))}
+      <Delete
+        isOpen={deletionId}
+        onClose={() => setDeletionId()}
+        deletionId={deletionId}
+      />
     </section>
   );
 };

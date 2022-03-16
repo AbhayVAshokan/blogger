@@ -52,6 +52,17 @@ const usePostsQuery = () => {
         },
         options
       ),
+    Destroy: (postId, options) =>
+      useMutation(
+        ["destroy-post", postId],
+        async () => {
+          const { data } = await axios.delete(
+            `https://jsonplaceholder.typicode.com/posts/${postId}`
+          );
+          return data;
+        },
+        options
+      ),
   };
 };
 
