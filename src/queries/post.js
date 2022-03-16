@@ -40,6 +40,18 @@ const usePostsQuery = () => {
         },
         options
       ),
+    Update: ({ postId, payload }, options) =>
+      useMutation(
+        ["update-post", postId],
+        async () => {
+          const data = await axios.patch(
+            `https://jsonplaceholder.typicode.com/posts/${postId}`,
+            payload
+          );
+          return data;
+        },
+        options
+      ),
   };
 };
 

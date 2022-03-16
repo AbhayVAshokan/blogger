@@ -1,48 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import usePostsQuery from "../queries/post";
 
 const Edit = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { userId } = useParams();
   const [post, setPost] = useState({
+    userId,
     title: "",
     body: "",
   });
   const navigate = useNavigate();
   const { postId } = useParams();
-
-  useEffect(() => {
-    const loadPost = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://jsonplaceholder.typicode.com/posts/${postId}`
-        );
-        setPost(data);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPost();
-  }, [postId]);
+  const { isLoading, isError } = usePostsQuery().Show(postId, {
+    onSuccess: (data) => setPost(data),
+  });
+  const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Update({
+    postId,
+    payload: post,
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    try {
-      await axios.patch(
-        `https://jsonplaceholder.typicode.com/posts/${postId}`,
-        post
-      );
-      navigate(-1);
-    } catch (error) {
-    } finally {
-      setIsSubmitting(false);
-    }
+    await mutateAsync({ postId, payload: post });
+    navigate(-1);
   };
 
   const handleChange = (event) => {
@@ -52,6 +33,14 @@ const Edit = () => {
 
   if (isLoading) {
     return <progress indeterminate />;
+  }
+
+  if (isError) {
+    return (
+      <h3 className="secondary">
+        Something went wrong! Please try again later.
+      </h3>
+    );
   }
 
   return (
