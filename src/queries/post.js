@@ -16,6 +16,7 @@ const usePostsQuery = () => {
         },
         {
           staleTime: 500000,
+          refetchInterval: 500000,
           ...options,
         }
       ),
