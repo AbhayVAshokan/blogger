@@ -20,19 +20,25 @@ const usePostsQuery = () => {
         }
       ),
 
-    Show: (postId, options) =>
-      useQuery(
+    Show: ({ postId, userId }, options) => {
+      const post = queryClient
+        .getQueryData(["list-posts", userId])
+        ?.find((post) => post.id === parseInt(postId));
+
+      return useQuery(
         ["show-post", postId],
         async () => {
           const { data } = await postsApi.show(postId);
           return data;
         },
         {
-          staleTime: 500000,
+          staleTime: 5000,
           refetchOnWindowFocus: false,
+          initialData: post,
           ...options,
         }
-      ),
+      );
+    },
 
     Create: (payload, options) =>
       useMutation(

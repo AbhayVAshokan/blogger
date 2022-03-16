@@ -5,10 +5,14 @@ import usePostsQuery from "../queries/post";
 
 const Edit = () => {
   const navigate = useNavigate();
-  const { postId } = useParams();
-  const { data, isLoading, isError } = usePostsQuery().Show(postId, {
-    onSuccess: (data) => setPost(data),
-  });
+  const { postId, userId } = useParams();
+  const { data, isLoading, isError } = usePostsQuery().Show(
+    { postId, userId },
+    {
+      staleTime: 0,
+      onSuccess: (data) => setPost(data),
+    }
+  );
   const [post, setPost] = useState(data);
   const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Update({
     postId,
