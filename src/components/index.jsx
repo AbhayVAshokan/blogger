@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
+import usePostsQuery from "../queries/post";
+
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
-        );
-        setPosts(data);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPosts();
-  }, [userId]);
+  const { data: posts, isLoading, isError } = usePostsQuery.fetch(userId);
 
   if (isLoading) {
     return <progress indeterminate />;
+  }
+
+  if (isError) {
+    return (
+      <h3 className="secondary">
+        Something went wrong! Please try again later.
+      </h3>
+    );
   }
 
   return (
