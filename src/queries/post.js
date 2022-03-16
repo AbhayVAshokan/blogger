@@ -1,5 +1,6 @@
-import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+
+import postsApi from "../apis/post";
 
 const usePostsQuery = () => {
   const queryClient = useQueryClient();
@@ -9,9 +10,7 @@ const usePostsQuery = () => {
       useQuery(
         ["list-posts", userId],
         async () => {
-          const { data } = await axios.get(
-            `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
-          );
+          const { data } = await postsApi.fetch(userId);
           return data;
         },
         {
@@ -20,51 +19,44 @@ const usePostsQuery = () => {
           ...options,
         }
       ),
+
     Show: (postId, options) =>
       useQuery(
         ["show-post", postId],
         async () => {
-          const { data } = await axios.get(
-            `https://jsonplaceholder.typicode.com/posts/${postId}`
-          );
+          const { data } = await postsApi.show(postId);
           return data;
         },
         {
           ...options,
         }
       ),
+
     Create: (payload, options) =>
       useMutation(
         "create-post",
         async () => {
-          const { data } = await axios.post(
-            "https://jsonplaceholder.typicode.com/posts",
-            payload
-          );
-
+          const { data } = await postsApi.create(payload);
           return data;
         },
         options
       ),
+
     Update: ({ postId, payload }, options) =>
       useMutation(
         ["update-post", postId],
         async () => {
-          const data = await axios.patch(
-            `https://jsonplaceholder.typicode.com/posts/${postId}`,
-            payload
-          );
+          const data = postsApi.update(postId, payload);
           return data;
         },
         options
       ),
+
     Destroy: (postId, options) =>
       useMutation(
         ["destroy-post", postId],
         async () => {
-          const { data } = await axios.delete(
-            `https://jsonplaceholder.typicode.com/posts/${postId}`
-          );
+          const { data } = await postsApi.destroy(postId);
           return data;
         },
         options
