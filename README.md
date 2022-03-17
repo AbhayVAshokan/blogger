@@ -1,4 +1,6 @@
 # Blogger
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6be6e557-4ac1-417a-bc01-71885ac2a6d1/deploy-status)](https://app.netlify.com/sites/react-query-blogger/deploys)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://react-query-blogger.netlify.app/)
 
 > A demo blogging platform to learn [React Query](https://reactquery.com/).
 
@@ -18,4 +20,4 @@ yarn install
 
 - Start the development server using `yarn start`. The application will be running on port `3000`.
 
-> **Nothing fancy, just another project to learn something new!**.
+> Nothing fancy, just another project to learn something new!
