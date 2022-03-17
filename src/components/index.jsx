@@ -30,6 +30,7 @@ const Dashboard = () => {
       <button onClick={() => navigate(`/${userId}/posts/new`)}>
         + Add New Post
       </button>
+      {posts.length === 0 && <h4>You have no posts. Add a few.</h4>}
       {posts.map(({ id, title, body }) => (
         <article key={id}>
           <Link to={`/${userId}/posts/${id}`}>
