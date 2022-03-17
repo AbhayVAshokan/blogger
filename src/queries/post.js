@@ -32,7 +32,7 @@ const usePostsQuery = () => {
           return data;
         },
         {
-          staleTime: 5000,
+          staleTime: 500000,
           refetchOnWindowFocus: false,
           initialData: post,
           ...options,
@@ -50,11 +50,11 @@ const usePostsQuery = () => {
         options
       ),
 
-    Update: ({ postId, payload }, options) =>
+    Update: (postId, options) =>
       useMutation(
         ["update-post", postId],
-        async () => {
-          const data = postsApi.update(postId, payload);
+        async ({ payload }) => {
+          const { data } = postsApi.update(postId, payload);
           return data;
         },
         options

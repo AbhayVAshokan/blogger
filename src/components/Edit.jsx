@@ -1,28 +1,39 @@
 import React, { useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "react-query";
+
 import usePostsQuery from "../queries/post";
 
 const Edit = () => {
   const navigate = useNavigate();
   const { postId, userId } = useParams();
-  const { data, isLoading, isError } = usePostsQuery().Show(
+  const queryClient = useQueryClient();
+  const { data, isLoading } = usePostsQuery().Show(
     { postId, userId },
     {
-      staleTime: 0,
       onSuccess: (data) => setPost(data),
     }
   );
+  const { isLoading: isSubmitting, mutate: updatePost } =
+    usePostsQuery().Update(postId, {
+      onSuccess: () => {
+        queryClient.setQueryData(["list-posts", userId], (posts) => {
+          const postIndex = posts.findIndex(
+            (post) => post.id === parseInt(postId)
+          );
+          posts[postIndex] = post;
+          return posts;
+        });
+        queryClient.setQueryData(["show-post", postId], () => post);
+        navigate(-1);
+      },
+    });
   const [post, setPost] = useState(data);
-  const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Update({
-    postId,
-    payload: post,
-  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutateAsync({ postId, payload: post });
-    navigate(-1);
+    updatePost(post);
   };
 
   const handleChange = (event) => {
@@ -32,14 +43,6 @@ const Edit = () => {
 
   if (isLoading) {
     return <progress indeterminate />;
-  }
-
-  if (isError) {
-    return (
-      <h3 className="secondary">
-        Something went wrong! Please try again later.
-      </h3>
-    );
   }
 
   return (
