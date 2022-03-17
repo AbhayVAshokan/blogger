@@ -40,10 +40,10 @@ const usePostsQuery = () => {
       );
     },
 
-    Create: (payload, options) =>
+    Create: (options) =>
       useMutation(
         "create-post",
-        async () => {
+        async (payload) => {
           const { data } = await postsApi.create(payload);
           return data;
         },

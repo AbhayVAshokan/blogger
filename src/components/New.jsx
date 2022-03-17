@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "react-query";
+
 import usePostsQuery from "../queries/post";
 
 const New = () => {
   const navigate = useNavigate();
+  const [post, setPost] = useState({});
+  const queryClient = useQueryClient();
   const { userId } = useParams();
-  const [post, setPost] = useState({
-    userId,
-    title: "",
-    body: "",
+  const { isLoading: isSubmitting, mutate: addPost } = usePostsQuery().Create({
+    onSuccess: (post) => {
+      post.userId = userId;
+      queryClient.setQueryData(["list-posts", userId], (posts) => {
+        posts.push(post);
+        return posts;
+      });
+      navigate(-1);
+    },
   });
-  const { isLoading: isSubmitting, mutateAsync } = usePostsQuery().Create(post);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await mutateAsync(post);
-    // why does it call fetch-lists api again?
-    navigate(-1);
+    addPost(post);
   };
 
   const handleChange = (event) => {
