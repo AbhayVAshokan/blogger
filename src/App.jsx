@@ -20,7 +20,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <main className="container">
-        {/* <NavBar handleLogout={() => setIsLoggedIn(false)} /> */}
         <Routes>
           <Route
             path="/"
@@ -38,7 +37,7 @@ const App = () => {
                 <Route path=":userId/posts/:postId" element={<Post />} />
               </>
             ) : (
-              <Route path="*" element={<Navigate to="login" />} />
+              <Route path="/" element={<Navigate to="login" />} />
             )}
           </Route>
         </Routes>
